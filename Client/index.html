@@ -1,0 +1,53 @@
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css"/>
+        <link rel="stylesheet" type="text/css" href="index.css"/>
+        <link rel="" type="text/css" href="index.css"/>
+        <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="font-awesome-4.7.0\font-awesome-4.7.0\css\font-awesome.css">
+    </head>
+    <body>
+         <script src="/socket.io/socket.io.js"></script>
+        <script src="jquery.min.js"></script>
+        <script src="mo.min.js"></script>
+        <script src="bootstrap/js/bootstrap.min.js"></script>
+        <script src="fade.js"></script>
+        <script src="login.js"></script>
+       
+        <div id="wrapper">
+            <!--header -->
+            
+            <div class="jumbotron jumbotron-fluid primary heading">
+                <div class="container">
+                    <h1 class="text-center">Scoombe production centre</h1>
+                </div>
+            </div>
+           
+            <!-- page content -->
+            <div id="page-content-wrapper">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div style="position: fixed;top:50%;left:50%; transform: translate(-50%, -50%);">
+                             <div id="msg" class="alert alert-danger hidden" role="alert">
+                                
+                             </div>
+                            <form id="logonform" method="post" class="form-group">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
+                                    <input id="username"  pattern="^[A-Za-z0-9_]{5,15}$" required title="enter 5 to 15 alphnumerics or underscores" class="form-control" name="username" type="text" placeholder="Username" />
+                                </div>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-key fa-fw"></i></span>
+                                    <input id="password" required title="enter 5 to 15 alphnumerics or underscores" class="form-control" type="password" name="password" placeholder="Password" />
+                                </div>
+                                <div class="centre">
+                                <button type=submit id="login-button" class="btn btn-primary btn-block">Log in to Scoombe production centre</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,28 @@
+{
+  "name": "pomodoro",
+  "main": "Client/electron-file.js",
+  "version": "1.0.0",
+  "description": "a pomodoro timer",
+  "database": "production",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "crypto": "^1.0.1",
+    "express": "^4.16.2",
+    "express-session": "^1.15.6",
+    "http": "0.0.0",
+    "mo-js": "^0.288.1",
+    "path": "^0.12.7",
+    "socket.io": "^2.0.3",
+    "sqlite": "^2.8.0",
+    "sqlite3": "^3.1.13"
+  },
+  "devDependencies": {
+    "electron": "^1.6.2"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "debug": "node server.js"
+  },
+  "author": "sjc",
+  "license": "ISC"
+}

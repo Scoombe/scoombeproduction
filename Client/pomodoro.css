@@ -1,0 +1,22 @@
+body{
+    background-color: #222;
+    font-family: 'Roboto', sans-serif;
+    
+}
+h3{
+    font-size: 62px;
+}
+.centered-div{
+  position: absolute;
+  width:100px;
+  text-align: center;
+
+}
+#timer-text{
+    color: white;
+}
+#clock-div{
+    border-color:white;
+    border:4px;
+    border-radius:50%;
+}

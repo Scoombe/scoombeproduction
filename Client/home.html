@@ -1,0 +1,115 @@
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css"/>
+        <link rel="stylesheet" type="text/css" href="index.css"/>
+        <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="font-awesome-4.7.0\font-awesome-4.7.0\css\font-awesome.css">
+    </head>
+    <body>
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="jquery.min.js"></script> 
+        <script src="mo.min.js"></script>
+        <script src="bootstrap/js/bootstrap.min.js"></script>
+        <script src="fade.js"></script>
+        <script src="home.js"></script>
+         <script src="Sortable.js"></script
+        <div id="wrapper">
+            <!--header -->
+            
+            <div class="jumbotron jumbotron-fluid primary heading">
+                <div class="container">
+                    <h1 class="text-center">Scoombe production centre</h1>
+                </div>
+            </div>
+           
+            <!-- page content -->
+            <div id="page-content-wrapper">
+                <div class="container-fluid">
+                    <div class="row">
+                         <!-- siderbar -->
+                        <div id="siderbar-wrapper" class="sidebar col-md-2 pull-left">
+                            <div class="text-center"> <h3 title="Logged in user"  id="username"> </h3></div>
+                            <button class="btn btn-primary btn-block" data-toggle="modal" href="#todomodal" title="Create a new todo item"><i class="fa fa-plus"></i> new todo </button>
+                                <button class="btn btn-primary btn-block"><i class="fa fa-plus"></i> new Pomodoro </button>
+                        </div>
+                        <div class="col-md-7" >
+                            <h1>Todo Tasks</h1>
+                            <div class="form-group list-group" title="Click on a todo to edit it">
+                                <div class="list-group-item " style="background-color:#dee1e5">Todo list<button class="btn btn-default pull-right" title="Save the ordering of tasks" ><i class="fa fa-floppy-o"  aria-hidden="true"></i></button></div>
+                                <ul id="todo-list-table" class="table"> 
+                                
+                                </ul>
+                            </div>
+                            <div class="form-group" title="Click on a todo to edit it">
+                                 <div class="list-group-item" style="background-color:#dee1e5">Done Todo's<button class="btn btn-default pull-right" title="Save the ordering of tasks"><i class="fa fa-floppy-o" aria-hidden="true"></i></button></div>
+                                <table class="table" id="todo-list-done"> 
+                               
+                                </table>
+                            </div>
+                        </div> 
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- new todo modal -->
+        <div id="todomodal" class="modal" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title" id="model-header">New Too do </h4>
+                </div>
+                <div class="modal-body">
+                    <form id="task-modal-form">
+                        <p1>Title</p1>
+                        <input id="todo-title" type="text" class="form-control"/>
+                        <p1>Notes</p1>
+                        <input id="todo-notes" type="text" class="form-control"/>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    
+                    <button id="create-btn" type="button" class="btn btn-default">Create Task</button>
+                    <button id="close-btn" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+                </div>
+
+            </div>
+        </div>
+          <!-- update todo modal -->
+        <div id="update-todo-modal" class="modal" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title" id="model-header">update Too do </h4>
+                </div>
+                <div class="modal-body">
+                    <form id="task-modal-form">
+                        <p1>Title</p1>
+                        <input id="update-todo-title" type="text" class="form-control"/>
+                        <p1>Notes</p1>
+                        <input id="update-todo-notes" type="text" class="form-control"/>
+                       
+                         <p1>Done</p1>
+                         </br>
+                         <div class="btn-group" data-toggle="buttons">
+                            <label class="btn btn-primary active">
+                                <input id="update-todo-done" type="checkbox" autocomplete="off"/>
+                            <label class="btn btn-primary active">
+                            </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    
+                    <button id="update-todo-btn" type="button" class="btn btn-default">Update Task</button>
+                    <button id="close-btn" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+                </div>
+
+            </div>
+        </div>
+    </body>
+</html>

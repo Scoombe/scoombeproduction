@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css"/>
+        <link rel="stylesheet" type="text/css" href="pomodoro.css"/>
+        <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="font-awesome-4.7.0\font-awesome-4.7.0\css\font-awesome.css"
+    </head>
+    <body>
+        <script src="jquery.min.js"></script>
+        <script src="mo.min.js"></script>
+        <script src="bootstrap/js/bootstrap.min.js"></script>
+        <script src="fade.js"></script>
+        <script src="main.js"></script>
+        <div class="centered-div" id="clock-div">
+            <h3 id="timer-text"></h3>
+            `````
+        </div>
+
+
+        <div id="startModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Modal Header</h4>
+                </div>
+                <div class="modal-body">
+                    <form id="pomo-form">
+                        <p1>What is your goal for the pomodoro:</p1>
+                        <input id="workGoal" type="text" class="form-control"/>
+                        <p1>How many minutes are you working on this for</p1>
+                        <input id="workTime" type="text" class="form-control"/>
+                        <p1>How many minutes for a break?</p1>
+                        <input id="breakTime" type="text" class="form-control"/>
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    
+                    <button id="start-btn" type="button" class="btn btn-default">Start Pomodoro</button>
+                    <button id="close-btn" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+                </div>
+
+            </div>
+        </div>
+    </body>
+</html>
