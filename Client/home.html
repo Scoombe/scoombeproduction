@@ -1,6 +1,7 @@
 <html>
     <head>
         <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css"/>
+        <link rel="stylesheet" type="text/css" href="jquery-ui/jquery-ui.min.css"/>
         <link rel="stylesheet" type="text/css" href="index.css"/>
         <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="font-awesome-4.7.0\font-awesome-4.7.0\css\font-awesome.css">
@@ -8,6 +9,7 @@
     <body>
         <script src="/socket.io/socket.io.js"></script>
         <script src="jquery.min.js"></script> 
+         <script src="/jquery-ui/jquery-ui.min.js"></script> 
         <script src="mo.min.js"></script>
         <script src="bootstrap/js/bootstrap.min.js"></script>
         <script src="fade.js"></script>
@@ -32,19 +34,19 @@
                             <button class="btn btn-primary btn-block" data-toggle="modal" href="#todomodal" title="Create a new todo item"><i class="fa fa-plus"></i> new todo </button>
                                 <button class="btn btn-primary btn-block"><i class="fa fa-plus"></i> new Pomodoro </button>
                         </div>
-                        <div class="col-md-7" >
+                        <div class="col-md-10 form-group" >
                             <h1>Todo Tasks</h1>
-                            <div class="form-group list-group" title="Click on a todo to edit it">
-                                <div class="list-group-item " style="background-color:#dee1e5">Todo list<button class="btn btn-default pull-right" title="Save the ordering of tasks" ><i class="fa fa-floppy-o"  aria-hidden="true"></i></button></div>
-                                <ul id="todo-list-table" class="table"> 
+                            <div class="list-group col-md-6" title="Click on a todo to edit it">
+                                <div class="list-group-item " style="background-color:#dee1e5">Todo list</div>
+                                <ul id="todo-list-table" class="table connectedTable" style="min-height: 50px"> 
                                 
                                 </ul>
                             </div>
-                            <div class="form-group" title="Click on a todo to edit it">
-                                 <div class="list-group-item" style="background-color:#dee1e5">Done Todo's<button class="btn btn-default pull-right" title="Save the ordering of tasks"><i class="fa fa-floppy-o" aria-hidden="true"></i></button></div>
-                                <table class="table" id="todo-list-done"> 
-                               
-                                </table>
+                            <div class=" col-md-6" title="Click on a todo to edit it">
+                                 <div class="list-group-item" style="background-color:#dee1e5">Done Todo's <button id="save-order" class="btn btn-default disabled pull-right" title="Save the order of the todo's"><i class="fa fa-floppy-o"> </i></button></div>
+                                 <ul id="todo-list-done" class="table connectedTable" style="min-height: 50px"> 
+                                
+                                </ul>
                             </div>
                         </div> 
                     </div>
@@ -92,14 +94,6 @@
                         <input id="update-todo-title" type="text" class="form-control"/>
                         <p1>Notes</p1>
                         <input id="update-todo-notes" type="text" class="form-control"/>
-                       
-                         <p1>Done</p1>
-                         </br>
-                         <div class="btn-group" data-toggle="buttons">
-                            <label class="btn btn-primary active">
-                                <input id="update-todo-done" type="checkbox" autocomplete="off"/>
-                            <label class="btn btn-primary active">
-                            </div>
                     </form>
                 </div>
                 <div class="modal-footer">

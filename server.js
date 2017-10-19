@@ -57,14 +57,12 @@ app.use(sessionMiddleware);
 
     //route for getting the index page
     app.get('/',function(req,res){
-        console.log(res);
         res.sendFile(path.join(__dirname + '/Client/index.html'));
     });
 
 
      //route for getting the home page
     app.get('/home',function(req,res){
-        console.log(res);
         //if there is a username
         if(req.session && req.session.user_id){
             res.sendFile(path.join(__dirname + '/Client/home.html'));
@@ -81,7 +79,6 @@ app.use(sessionMiddleware);
     //the handling of the post from the index.html form
     app.post("/", function(Request, Result){
         //logging the requests
-        console.log(Request.body);
         var result = Request.body;
         var username = Request.body.username;
         var password = Request.body.password;
@@ -130,9 +127,7 @@ var server = app.listen(3000);
         console.log("there has been a new connection:  " + socket.id);
         //when the client sends the login message
         socket.on("login", function(data){
-            console.log(data);
             var session = socket.request.session
-            console.log(session);
         });
         socket.on("start", function(data){
             //get the tasks from the databasae
@@ -144,7 +139,6 @@ var server = app.listen(3000);
         })
         socket.on("home",function(data){
             var session = socket.request.session;
-            console.log(session);
             socket.emit('username',session.username);
         })
         socket.on("newTask",function(data){
@@ -164,11 +158,26 @@ var server = app.listen(3000);
             var session = socket.request.session;
             var user_id = session.user_id;
             console.log("getting tasks");
-            db.all("SELECT * from tasks where user_id = $user_id and done = 0",{$user_id:user_id},function(err,rows){
-                socket.emit("tasks",rows);
+            var results = {}
+            db.all("SELECT * from tasks where user_id = $user_id and done = 0 ORDER BY priority, task_id",{$user_id:user_id},function(err,rows){
+                if(err){
+                    console.log(err.message);
+                }
+                else{
+                    socket.emit("tasks",rows);
+                }
             });
+            db.all("SELECT * from tasks where user_id = $user_id and done = 1 ORDER BY date_done, task_id",{$user_id:user_id},function(err,rows){
+                results.done = rows;
+                if(err){
+                    console.log(err.message);
+                }
+                else{
+                    socket.emit("tasks-done",rows);
+                }
+            });
+           
         })
-
         socket.on("updateTask",function(data){
             var sesion = socket.request.session;
             data.$user_id= sesion.user_id;
@@ -179,6 +188,37 @@ var server = app.listen(3000);
                 socket.emit("updateDone");
             });
             console.log("update done")
+        });
+        socket.on("reorderTasks",function(data){
+            var sesion = socket.request.session;
+            data.$user_id= sesion.user_id;
+            var taskCount = 0;
+            var doneCount = 0;
+            db.serialize(function(){
+                data.tasks.forEach(function(task) {
+                    db.run("UPDATE tasks set priority = $count, done = 0 WHERE task_id = $task_id and user_id = $user_id",
+                    {$count:taskCount,
+                     $task_id:task[taskCount],
+                     $user_id:session.user_id},
+                    function(err){
+                        if(err){
+                            console.log(err.message);
+                        }
+                    })
+                });
+                data.doneTasks.forEach(function(task){
+                     db.run("UPDATE tasks set date_done = $date, done = 1 WHERE task_id = $task_id and user_id = $user_id",
+                    {$task_id:task[taskCount],
+                     $user_id:session.user_id,
+                     $date:new Date()},
+                    function(err){
+                        if(err){
+                            console.log(err.message);
+                        }
+                    })
+                });
+            });
+            socket.emit("updateDone");
         });
         socket.on("deleteTask",function(data){
             //sql for deleting a task
