@@ -19,7 +19,8 @@ var session = require("express-session");
        
 //this is for the routing of the application
 var app = express();
-
+//moment used for formatting dates
+var moment = require('moment');
 var server = Server(app);
 //this is for the client side javascript requests to the server
 var socketio = require('socket.io')(server);
@@ -124,7 +125,6 @@ var server = app.listen(3000);
     //when there is  a connection then creating a new socket
     socketio.listen(server).on('connection', function (socket) {
         console.log("there has been a new connection:  " + socket.id);
-
         /* 
         calls: this is called on the login page when the user loads the page
         function: used to pass on any login errors
@@ -157,15 +157,15 @@ var server = app.listen(3000);
             //todo: add validation for new tasks and update tasks            
             //sql for a new task
             var session = socket.request.session;
-            var title = data.Title;
-            var notes = data.Notes;
             //getting the user_id from the session 
             var user_id = session.user_id;
+            let date = moment().format("YYYY:MM:DD");
             //executing sql to add a new todo to the database
-            db.run("insert into tasks(task_id,user_id, task_heading, task_description, priority, done) VALUES((SELECT IFNULL(MAX(task_id),0) + 1 FROM tasks where user_id = $user_id), $user_id, $title, $notes, (select IFNULL(MAX(priority),0) from tasks),0)",{$user_id:user_id,$title:title,$notes:notes},function(err){
+            db.run(`insert into tasks(task_id,user_id, task_heading, task_description, position, done, date_added, category_id) VALUES((SELECT IFNULL(MAX(task_id),0) + 1 FROM tasks where user_id = '${user_id}'), '${user_id}', '${data.title}', '${data.notes}', (select IFNULL(MAX(position),0) from tasks),0, '${date}', '${data.category}')`,function(err){
                 if(err){
                     console.log(err.message);
                 }
+                socket.emit("updateDone");
             });
 
         });
@@ -178,7 +178,7 @@ var server = app.listen(3000);
             var user_id = session.user_id;
             console.log("getting tasks");
             //selecting all of the tasks and ordering them by priority
-            db.all("SELECT * from tasks where user_id = $user_id and done = 0 ORDER BY priority, task_id",{$user_id:user_id},function(err,rows){
+            db.all("SELECT * from tasks where user_id = $user_id and done = 0 ORDER BY position, task_id",{$user_id:user_id},function(err,rows){
                 if(err){
                     console.log(err.message);
                 }
@@ -198,6 +198,37 @@ var server = app.listen(3000);
            
         })
         /*
+        function: Getting the colours from the database
+        */
+        socket.on("getColours",function(){
+            console.log("getting colours");
+            db.all("SELECT * from colours",{},function(err,rows){
+                if(err){
+                    console.log("Error Retriving Colors: " + err.message);
+                }
+                else{
+                    console.log("Colour Submitted");
+                    socket.emit("colours",rows);
+                }
+            });
+        });
+
+         /*
+        function: Getting the categories from the database
+        */
+        socket.on("getCategories",function(){
+            console.log("getting Categories");
+            db.all("SELECT category_id, category_name, categories.colour_id, colour_code from categories left join colours on categories.colour_id = colours.colour_id",{},function(err,rows){
+                if(err){
+                    console.log("Error Retriving Categories: " + err.message);
+                }
+                else{
+                    socket.emit("categories",rows);
+                }
+            });
+        });
+
+        /*
         calls: called when the user updates a todo
         function: to update the todo in the database
         params: {data.$task_description} the updated description from the user
@@ -207,15 +238,36 @@ var server = app.listen(3000);
         socket.on("updateTask",function(data){
             var sesion = socket.request.session;
             //getting the user id from the session
-            data.$user_id= sesion.user_id;
+            data.user_id= sesion.user_id;
             //updating the database with the user data]
-            db.run("UPDATE tasks SET task_description = $task_description, task_heading = $task_heading WHERE task_id = $task_id and user_id = $user_id",data,function(err){
+            db.run(`UPDATE tasks SET task_description = '${data.task_description}', task_heading = '${data.task_heading}',  category_id = '${data.category_id}' WHERE task_id = '${data.task_id}' and user_id = '${data.user_id}'`,function(err){
                 if(err){
-                    console.log(err.message);
+                    console.log("Failed Update " + err.message);
                 }
                 socket.emit("updateDone");
             });
             console.log("update done")
+        });
+
+         /*
+        calls: called when the user createas  a todo category
+        function: to create todo categories in the database
+        params: {data.$task_description} the updated description from the user
+                {data.$task_heading} the updated notes from the user
+                {data.$task_id} the task_id
+        */
+        socket.on("createCategory",function(data){
+            var sesion = socket.request.session;
+            //getting the user id from the session
+            data.$user_id= sesion.user_id;
+            //updating the database with the user data]
+            db.run(`INSERT INTO categories(user_id, category_id, category_name, colour_id ) VALUES(${data.$user_id}, (SELECT IFNULL(MAX(category_id),0) + 1 FROM categories), '${data.$category_name}', '${data.$category_colour}')`,function(err){
+                if(err){
+                    console.log("Failed Create: " + err.message);
+                }
+                socket.emit("updateDone");
+            });
+            console.log("Created Category")
         });
         
         socket.on("reorderTasks",function(data){
@@ -223,13 +275,14 @@ var server = app.listen(3000);
             data.$user_id= sesion.user_id;
             var taskCount = 0;
             data.tasks.forEach(function(task) {
-                db.run("UPDATE tasks set priority = $count, done = 0 WHERE task_id = $task_id and user_id = $user_id",
+                db.run("UPDATE tasks set position = $count, done = 0 WHERE task_id = $task_id and user_id = $user_id",
                 {$count:taskCount,
                     $task_id:task,
                     $user_id:data.$user_id},
                 function(err){
                     if(err){
-                        console.log(err.message);
+
+                        console.log("Reorder Failed: " + err.message);
                     }
                 })
                 taskCount++;
@@ -238,10 +291,10 @@ var server = app.listen(3000);
                 db.run("UPDATE tasks set date_done = $date, done = 1 WHERE task_id = $task_id and user_id = $user_id",
                 {$task_id:task,
                     $user_id:data.$user_id,
-                    $date:new Date()},
+                    $date:new moment().format("YYYY:MM:DD")},
                 function(err){
                     if(err){
-                        console.log(err.message);
+                        console.log("Setting to done failed: " + err.message);
                     }
                 })
             });
@@ -249,6 +302,24 @@ var server = app.listen(3000);
         });
         socket.on("deleteTask",function(data){
             //sql for deleting a task
+        });
+        //function for the deleting of a category
+        //parama: data, should be the category id coming from the home page
+        socket.on("deleteCategory",function(data){
+            //sql for deleting a task
+            let sesion = socket.request.session; 
+            let user_id= sesion.user_id;
+            let category_id  = data;
+            db.run(` update tasks set category_id = '' where category_id = ${category_id}`, function(err){
+                if(err){console.log("Updateing tasks for category delete Failed: ");}
+            });
+            db.run(`delete from categories where user_id = '${user_id}' and category_id = '${category_id}`,function(err){
+                if(err){console.log("Deleting Category Failed: ");}
+                else{
+                    console.log("Deleted Categoroy: " + data) ;
+                    socket.emit("updateDone");
+                }
+            })
         });
     })
 //end of socket logic

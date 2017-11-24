@@ -10,14 +10,15 @@
     "express": "^4.16.2",
     "express-session": "^1.15.6",
     "http": "0.0.0",
-    "mo-js": "^0.288.1",
+    "mo-js": "^0.288.2",
+    "moment": "^2.19.2",
     "path": "^0.12.7",
-    "socket.io": "^2.0.3",
+    "socket.io": "^2.0.4",
     "sqlite": "^2.8.0",
     "sqlite3": "^3.1.13"
   },
   "devDependencies": {
-    "electron": "^1.6.2"
+    "electron": "^1.8.1"
   },
   "scripts": {
     "start": "node server.js",

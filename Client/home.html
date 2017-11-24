@@ -14,7 +14,8 @@
         <script src="bootstrap/js/bootstrap.min.js"></script>
         <script src="fade.js"></script>
         <script src="home.js"></script>
-         <script src="Sortable.js"></script
+        <script src="Sortable.js"></script>
+        <script src="moment.js"></script>
         <div id="wrapper">
             <!--header -->
             
@@ -31,8 +32,14 @@
                          <!-- siderbar -->
                         <div id="siderbar-wrapper" class="sidebar col-md-2 pull-left">
                             <div class="text-center"> <h3 title="Logged in user"  id="username"> </h3></div>
-                            <button class="btn btn-primary btn-block" data-toggle="modal" href="#todomodal" title="Create a new todo item"><i class="fa fa-plus"></i> new todo </button>
-                                <button class="btn btn-primary btn-block"><i class="fa fa-plus"></i> new Pomodoro </button>
+                            <button class="btn btn-primary btn-block" data-toggle="modal" href="#create-todo-modal" title="Create a new todo item"><i class="fa fa-plus"></i> new todo </button>
+                            <button class="btn btn-primary btn-block" data-toggle="modal" href="#todo-category-modal" title="Create a new todo category item"><i class="fa fa-plus"></i> new todo category</button>
+                            <button class="btn btn-primary btn-block"><i class="fa fa-plus"></i> new Pomodoro </button>
+                            <div class="text-center"> <h3 >Categories </h3>
+                                <ul id="category-list" class="list-group">
+                                    
+                                </ul>
+                            </div>
                         </div>
                         <div class="col-md-10 form-group" >
                             <h1>Todo Tasks</h1>
@@ -54,7 +61,7 @@
             </div>
         </div>
         <!-- new todo modal -->
-        <div id="todomodal" class="modal" role="dialog">
+        <div id="create-todo-modal" class="modal" role="dialog">
             <div class="modal-dialog">
                 <!-- Modal content-->
                 <div class="modal-content">
@@ -68,6 +75,8 @@
                         <input id="todo-title" type="text" class="form-control"/>
                         <p1>Notes</p1>
                         <input id="todo-notes" type="text" class="form-control"/>
+                        <p1>Category</p1>
+                        <select id="todo-item-category" class="form-control"></select>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -94,11 +103,49 @@
                         <input id="update-todo-title" type="text" class="form-control"/>
                         <p1>Notes</p1>
                         <input id="update-todo-notes" type="text" class="form-control"/>
+                        <p1>Category</p1>
+                        <select id="update-item-category" class="form-control"></select>
                     </form>
                 </div>
                 <div class="modal-footer">
                     
                     <button id="update-todo-btn" type="button" class="btn btn-default">Update Task</button>
+                    <button id="close-btn" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+                </div>
+
+            </div>
+        </div>
+        <!--todo category modal -->
+        <div id="todo-category-modal" class="modal" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title" id="model-header">Create a To do Category</h4>
+                </div>
+                <div class="modal-body">
+                        <div class="alert alert-info">
+                               Create a todo category, and assign a colour to the category.
+                              </div>
+                    <form id="task-modal-form">
+                        <p1>Category Name</p1>
+                        <input id="todo-category-title" type="text" class="form-control" required pattern="^[a-zA-Z0-9_ ]*$"/>
+                        <p1>Category Colour</p1>
+                        <Select id="todo-category-colour" type="text" title="hex colour for the category" class="form-control">
+                        </Select>
+                        <p1>Preview</p1>
+                        <ul class="table" style="min-height: 50px"> 
+                            <li id="preview-li" class="list-group-item">
+                                <a><h4> preview todo item</h4></a>
+                                <p> 10 days since complete</p>
+                            </li>
+                        </ul>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button id="create-todo-category-btn" type="button" class="btn btn-default">Create Category</button>
                     <button id="close-btn" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
                 </div>
