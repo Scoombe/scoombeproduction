@@ -217,8 +217,10 @@ var server = app.listen(3000);
         function: Getting the categories from the database
         */
         socket.on("getCategories",function(){
+            let session = socket.request.session;
+            var user_id = session.user_id;
             console.log("getting Categories");
-            db.all("SELECT category_id, category_name, categories.colour_id, colour_code from categories left join colours on categories.colour_id = colours.colour_id",{},function(err,rows){
+            db.all(`SELECT category_id, category_name, categories.colour_id, colour_code from categories left join colours on categories.colour_id = colours.colour_id where user_id = ${user_id}`,function(err,rows){
                 if(err){
                     console.log("Error Retriving Categories: " + err.message);
                 }

@@ -98,6 +98,7 @@ socket.on('updateDone',function(data){
     $("#update-todo-modal").modal("hide");
     $("#todo-category-modal").modal("hide");
     //getting all of the tasks
+    clearModals();
     getColours();
     getCategories();
     getTasks();   
@@ -105,7 +106,7 @@ socket.on('updateDone',function(data){
 });
 
 function clearModals(){
-   let textBoxes  = ["#todo-notes","#todo-title","todo-category-title","todo-category-colour"]
+   let textBoxes  = ["#todo-notes","#todo-title","#todo-category-title","#todo-category-colour"]
     for(let i = 0; i < textBoxes.length; i++){
         $(textBoxes[i]).val("");
     }
