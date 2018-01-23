@@ -62,18 +62,32 @@ app.use(sessionMiddleware);
     app.get('/',function(req,res){
         res.sendFile(path.join(__dirname + '/Client/index.html'));
     });
+    
+
 
 
      //route for getting the home page
     app.get('/home',function(req,res){
+        authPage(req,res,'/Client/home.html','/');     
+    });
+
+    //route for getting the pomodoro page
+    app.get('/pomodoro',function(req,res){
+       authPage(req,res,'/Client/Pomodoro.html','/');
+    });
+
+    //function for the determining if the page is authorized or not
+    //params: req is the session,  url: is the url to direct to if auth, redirect, is the url to direct to if no auth.
+    function authPage(req, res, url, redirect){
         //if there is a username
         if(req.session && req.session.user_id){
-            res.sendFile(path.join(__dirname + '/Client/home.html'));
+            res.sendFile(path.join(__dirname + url ));
         }
         else{
-            res.redirect('/');
+            res.redirect(redirect);
         }        
-    });
+    };
+    
     //allowing the app to user the client folder to get resources
     app.use(express.static(path.join(__dirname, 'client')));
 
@@ -315,7 +329,7 @@ var server = app.listen(3000);
             db.run(` update tasks set category_id = '' where category_id = ${category_id}`, function(err){
                 if(err){console.log("Updateing tasks for category delete Failed: ");}
             });
-            db.run(`delete from categories where user_id = '${user_id}' and category_id = '${category_id}`,function(err){
+            db.run(`delete from categories where user_id = '${user_id}' and category_id = '${category_id}';`,function(err){
                 if(err){console.log("Deleting Category Failed: ");}
                 else{
                     console.log("Deleted Categoroy: " + data) ;

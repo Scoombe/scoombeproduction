@@ -22,18 +22,19 @@ db.serialize(function(){
     db.run("DELETE FROM COLOURS;");
     db.run("INSERT OR IGNORE INTO COLOURS(colour_id, colour_text, colour_code) VALUES(1,'Blue' ,'#add6ff'),(2,'Green','#b2fcc2'), (3,'Orange','#fce0b1'),(4,'Red','#fcb2b1'),(5,'Yellow','#fcfcb1')");
 
+    createUser();
    //call this to create the user again
     function createUser(){
         var crypto = require('crypto')
 
         //change these to create a mew user. 
-        var login_name = "";
-        var first_name = ""
-        var last_name = "";
-        var password = "";
+        var login_name = "test";
+        var first_name = "test"
+        var last_name = "test";
+        var password = "test";
 
         password = crypto.createHash('sha256').update(password).digest('base64');
-        db.run("INSERT INTO users (login_name,password, first_name, last_name) VALUES('Scoombe',$password, 'Sam','Coombe')", {$password:password});
+        db.run(`INSERT INTO users (login_name,password, first_name, last_name) VALUES('${login_name}','${password}', '${first_name}','${last_name}')`);
     }    
 });
 
