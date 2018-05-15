@@ -5,7 +5,7 @@
   "description": "a pomodoro timer",
   "database": "production",
   "dependencies": {
-    "body-parser": "^1.18.2",
+    "body-parser": "^1.18.3",
     "crypto": "^1.0.1",
     "express": "^4.16.2",
     "express-session": "^1.15.6",
