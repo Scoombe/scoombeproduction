@@ -15,7 +15,7 @@
     "path": "^0.12.7",
     "socket.io": "^2.1.1",
     "sqlite": "^2.9.2",
-    "sqlite3": "^4.0.2"
+    "sqlite3": "^4.0.4"
   },
   "devDependencies": {
     "electron": "^2.0.9"
