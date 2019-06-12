@@ -8,7 +8,7 @@
     "body-parser": "^1.18.3",
     "crypto": "^1.0.1",
     "express": "^4.16.2",
-    "express-session": "^1.15.6",
+    "express-session": "^1.16.2",
     "http": "0.0.0",
     "mo-js": "^0.288.2",
     "moment": "^2.22.2",
