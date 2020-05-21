@@ -11,7 +11,7 @@
     "express-session": "^1.15.6",
     "http": "0.0.0",
     "mo-js": "^0.288.2",
-    "moment": "^2.22.2",
+    "moment": "^2.26.0",
     "path": "^0.12.7",
     "socket.io": "^2.1.1",
     "sqlite": "^2.9.2",
